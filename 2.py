@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+
+
+data = pd.read_csv('simplereg.csv')
+x, y = data.iloc[:,:1].values, data.iloc[:,1].values
+
+
+print(x)
+print(y)
+
+
+
+x_tr, x_te, y_tr, y_te = train_test_split(x, y, test_size=1/3, random_state=0)
+
+
+regressor = LinearRegression().fit(x_tr, y_tr)
+
+
+x_pred_te, x_pred_tr = regressor.predict(x_te), regressor.predict(x_tr)
+
+
+mae = mean_absolute_error(y_te, x_pred_te)
+mse = mean_squared_error(y_te, x_pred_te)
+rmse = np.sqrt(mse)
+
+
+plt.scatter(x_tr, y_tr, color="green")
+plt.plot(x_tr, x_pred_tr, color="red")
+plt.title("Overs Vs Runs (Training Dataset)")
+plt.xlabel("Overs")
+plt.ylabel("Runs")
+plt.show()
